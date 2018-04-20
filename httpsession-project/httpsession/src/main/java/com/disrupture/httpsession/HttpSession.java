@@ -16,4 +16,8 @@ public class HttpSession {
     public void setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
     }
+
+    public void get(String path, HttpResponseHandler responseHandler) {
+
+    }
 }
