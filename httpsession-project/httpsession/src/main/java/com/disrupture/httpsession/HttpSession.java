@@ -18,6 +18,8 @@ public class HttpSession {
     }
 
     public void get(String path, HttpResponseHandler responseHandler) {
-
+        new HttpRequestTask("GET", baseUrl, path, responseHandler).execute();
     }
+
+    // TODO: NEED A GET THAT ALSO ACCEPTS HEADERS AND JSON BODY
 }
