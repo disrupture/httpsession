@@ -10,15 +10,29 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.util.Map;
 
 class HttpRequestTask extends AsyncTask<Void, Void, HttpResponse> {
     private String requestMethod;
     private SafeUrl url;
+    private Map<String, String> headers;
     private HttpResponseHandler responseHandler;
 
-    HttpRequestTask(String requestMethod, String baseUrl, String path, HttpResponseHandler responseHandler) {
+    HttpRequestTask(String requestMethod,
+                    String baseUrl,
+                    String path,
+                    HttpResponseHandler responseHandler) {
+        this(requestMethod, baseUrl, path, null, responseHandler);
+    }
+
+    HttpRequestTask(String requestMethod,
+                    String baseUrl,
+                    String path,
+                    Map<String, String> headers,
+                    HttpResponseHandler responseHandler) {
         this.requestMethod = requestMethod;
         this.url = new SafeUrl(baseUrl, path);
+        this.headers = headers;
         this.responseHandler = responseHandler;
     }
 
@@ -37,6 +51,12 @@ class HttpRequestTask extends AsyncTask<Void, Void, HttpResponse> {
         try {
             httpURLConnection = (HttpURLConnection) url.getUrl().openConnection();
             httpURLConnection.setRequestMethod(requestMethod);
+            // Add request headers
+            if (headers != null) {
+                for (Map.Entry<String, String> header : headers.entrySet()) {
+                    httpURLConnection.setRequestProperty(header.getKey(), header.getValue());
+                }
+            }
 
             // TODO: IF PASSING A BODY ALONG THEN NEED TO SETDOOUTPUT TO TRUE
 

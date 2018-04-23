@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -81,6 +82,15 @@ public class HttpSessionTest {
         mockSession.get("/posts", new HttpResponseHandler() {
             @Override
             public void onFinish() {}
+        });
+    }
+
+    @Test
+    public void getWithHeaders() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        mockSession.get("/posts", headers, new HttpResponseHandler() {
+            // no overrides required
         });
     }
 }

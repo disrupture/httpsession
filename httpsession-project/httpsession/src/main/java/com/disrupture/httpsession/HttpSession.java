@@ -1,5 +1,7 @@
 package com.disrupture.httpsession;
 
+import java.util.Map;
+
 public class HttpSession {
     private String baseUrl;
 
@@ -21,5 +23,7 @@ public class HttpSession {
         new HttpRequestTask("GET", baseUrl, path, responseHandler).execute();
     }
 
-    // TODO: NEED A GET THAT ALSO ACCEPTS HEADERS AND JSON BODY
+    public void get(String path, Map<String, String> headers, HttpResponseHandler responseHandler) {
+        new HttpRequestTask("GET", baseUrl, path, headers, responseHandler).execute();
+    }
 }
