@@ -26,6 +26,7 @@ class HttpRequestTask extends AsyncTask<Void, Void, HttpResponse> {
     protected HttpResponse doInBackground(Void... voids) {
 
         // TODO: ABSTRACT LOW LEVEL HTTP CODE OUT SO CAN BE USED IN SYNCHRONOUS CONTEXT AS WELL
+        // TODO: HOW WOULD A 300 REDIRECT BE HANDLED
 
         InputStream inputStream = null;
         HttpURLConnection httpURLConnection = null;
@@ -69,8 +70,6 @@ class HttpRequestTask extends AsyncTask<Void, Void, HttpResponse> {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -91,17 +90,14 @@ class HttpRequestTask extends AsyncTask<Void, Void, HttpResponse> {
 
     @Override
     protected void onPostExecute(HttpResponse httpResponse) {
+        if (httpResponse == null) {
+            responseHandler.onFailure(null);
+        } else if (httpResponse.isSuccessful()) {
+            responseHandler.onSuccess(httpResponse);
+        } else {
+            responseHandler.onFailure(httpResponse);
+        }
 
-
-        responseHandler.onSuccess(httpResponse);
-
-
-
-        // TODO: PULL OUT LOGIC FOR DETERMINING IF STATUSCODE REPRESENTS SUCCESS
-//        if (statusCode < 200 || statusCode > 299) {
-//            // TODO: MAKE SURE ALL FAILURES ARE CALLED
-//            // TODO: ACTUALLY WANT TO WAIT TO CALL RESPONSE HANDLERS IN POST EXECUTE SO BACK ON MAIN THREAD
-//            responseHandler.onFailure(statusCode);
-//        }
+        responseHandler.onFinish();
     }
 }

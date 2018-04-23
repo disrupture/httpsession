@@ -3,6 +3,9 @@ package com.disrupture.httpsession;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Model for an HTTP response that contains status code, headers, and body of response.
+ */
 public class HttpResponse {
     private int statusCode;
     private Map<String, List<String>> headers;
@@ -35,9 +38,14 @@ public class HttpResponse {
     /**
      * The body of the response.
      *
-     * @return a JSONObject, JSONArray, String, Boolean, Integer, Long, Double, or NULL
+     * @return a {@link org.json.JSONObject}, {@link org.json.JSONArray}, String, Boolean, Integer,
+     * Long, Double, or {@link org.json.JSONObject#NULL}
      */
     public Object getBody() {
         return body;
+    }
+
+    boolean isSuccessful() {
+        return statusCode >= 200 && statusCode < 300;
     }
 }

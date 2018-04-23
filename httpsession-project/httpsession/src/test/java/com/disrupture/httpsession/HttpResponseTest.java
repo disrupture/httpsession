@@ -98,4 +98,40 @@ public class HttpResponseTest {
         HttpResponse httpResponse = new HttpResponse(200, headers, null);
         assertEquals(null, httpResponse.getBody());
     }
+
+    @Test
+    public void isSuccessful_200_true() {
+        HttpResponse httpResponse = new HttpResponse(200, null, null);
+        assertTrue(httpResponse.isSuccessful());
+    }
+
+    @Test
+    public void isSuccessful_400_false() {
+        HttpResponse httpResponse = new HttpResponse(400, null, null);
+        assertFalse(httpResponse.isSuccessful());
+    }
+
+    @Test
+    public void isSuccessful_100_false() {
+        HttpResponse httpResponse = new HttpResponse(100, null, null);
+        assertFalse(httpResponse.isSuccessful());
+    }
+
+    @Test
+    public void isSuccessful_199_false() {
+        HttpResponse httpResponse = new HttpResponse(199, null, null);
+        assertFalse(httpResponse.isSuccessful());
+    }
+
+    @Test
+    public void isSuccessful_300_false() {
+        HttpResponse httpResponse = new HttpResponse(300, null, null);
+        assertFalse(httpResponse.isSuccessful());
+    }
+
+    @Test
+    public void isSuccessful_299_true() {
+        HttpResponse httpResponse = new HttpResponse(299, null, null);
+        assertTrue(httpResponse.isSuccessful());
+    }
 }
